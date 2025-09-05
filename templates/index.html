@@ -32,6 +32,7 @@
             --header-height: 70px;
             --border-radius: 12px;
             --sidebar-width: 260px;
+            --sidebar-mobile-width: 80%;
         }
 
         .dark-mode {
@@ -65,6 +66,23 @@
             line-height: 1.6;
             transition: var(--transition);
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Mobile overlay for sidebar */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
         }
 
         /* Layout */
@@ -148,6 +166,7 @@
             flex: 1;
             margin-left: var(--sidebar-width);
             padding: 20px 30px;
+            transition: var(--transition);
         }
 
         .top-header {
@@ -806,6 +825,34 @@
             }
         }
 
+        /* Mobile Menu Button */
+        .menu-toggle {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text);
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .menu-toggle:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* Mobile Search */
+        .mobile-search {
+            display: none;
+            width: 100%;
+            margin: 15px 0;
+        }
+
         /* Responsive Design */
         @media (max-width: 1200px) {
             .dashboard-grid {
@@ -816,36 +863,46 @@
         @media (max-width: 992px) {
             .sidebar {
                 transform: translateX(-100%);
-                width: 0;
+                width: var(--sidebar-mobile-width);
+                z-index: 1000;
             }
             
             .sidebar.active {
                 transform: translateX(0);
-                width: var(--sidebar-width);
             }
             
             .main-content {
                 margin-left: 0;
+                padding: 15px;
             }
             
             .menu-toggle {
-                display: block;
+                display: flex;
             }
             
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
             }
+
+            .search-box {
+                display: none;
+            }
+
+            .mobile-search {
+                display: block;
+            }
+
+            .mobile-search .search-box {
+                display: block;
+                width: 100%;
+            }
+
+            .mobile-search .search-box input {
+                width: 100%;
+            }
         }
 
         @media (max-width: 768px) {
-            .main-content {
-                padding: 15px;
-            }
-            
-            .search-box input {
-                width: 180px;
-            }
-            
             .stats-grid {
                 grid-template-columns: 1fr;
             }
@@ -871,15 +928,37 @@
                 margin-left: 0;
                 margin-top: 5px;
             }
+
+            .page-title h2 {
+                font-size: 20px;
+            }
+
+            .page-title p {
+                font-size: 13px;
+            }
+
+            .card-value {
+                font-size: 24px;
+            }
+
+            .gigs-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .gigs-table th, 
+            .gigs-table td {
+                padding: 10px;
+            }
+
+            .header-actions {
+                gap: 10px;
+            }
         }
 
         @media (max-width: 576px) {
             .header-actions {
-                gap: 10px;
-            }
-            
-            .search-box {
-                display: none;
+                gap: 8px;
             }
             
             .quick-actions {
@@ -890,42 +969,121 @@
                 flex-direction: column;
                 align-items: flex-end;
             }
-            
-            .gigs-table {
-                display: block;
-                overflow-x: auto;
+
+            .notification-btn,
+            .theme-toggle {
+                width: 36px;
+                height: 36px;
+            }
+
+            .user-avatar {
+                width: 36px;
+                height: 36px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .stats-container,
+            .top-gigs,
+            .activity-feed {
+                padding: 20px;
+            }
+
+            .dashboard-grid {
+                gap: 20px;
+            }
+
+            .side-cards {
+                gap: 20px;
+            }
+
+            .mini-card {
+                padding: 15px;
+            }
+
+            .mini-card-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+
+            .mini-card-content h4 {
+                font-size: 16px;
+            }
+
+            .action-btn {
+                padding: 20px 15px;
+            }
+
+            .action-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
+
+            .action-text {
+                font-size: 15px;
+            }
+
+            .action-desc {
+                font-size: 12px;
             }
         }
 
-        .menu-toggle {
-            display: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: var(--card-bg);
-            color: var(--text);
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .menu-toggle:hover {
-            background: var(--primary-light);
-            color: var(--primary);
-        }
-        
-        @media (max-width: 992px) {
-            .menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-right: 10px;
+        @media (max-width: 400px) {
+            .sidebar {
+                width: 85%;
+            }
+
+            .header-actions {
+                gap: 5px;
+            }
+
+            .notification-btn,
+            .theme-toggle {
+                width: 34px;
+                height: 34px;
+                font-size: 14px;
+            }
+
+            .user-avatar {
+                width: 34px;
+                height: 34px;
+                font-size: 14px;
+            }
+
+            .card-value {
+                font-size: 22px;
+            }
+
+            .stat-item-value {
+                font-size: 18px;
+            }
+
+            .feed-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+
+            .feed-text h4 {
+                font-size: 14px;
+            }
+
+            .feed-text p {
+                font-size: 13px;
+            }
+
+            .feed-time {
+                font-size: 11px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <div class="app-container">
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -989,13 +1147,12 @@
                     <p>Gain insights into your Fiverr performance and market trends</p>
                 </div>
                 <div class="header-actions">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search gigs, categories...">
-                </div>
                     <div class="notification-btn">
                         <i class="fas fa-bell"></i>
                         <span class="notification-badge">3</span>
+                    </div>
+                    <div class="theme-toggle" id="themeToggleMobile">
+                        <i class="fas fa-moon"></i>
                     </div>
                     {% if user %}
                     <a href="/profile" class="user-profile">
@@ -1006,6 +1163,13 @@
                         </div>
                     </a>
                     {% endif %}
+                </div>
+            </div>
+
+            <div class="mobile-search">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInputMobile" placeholder="Search gigs, categories...">
                 </div>
             </div>
 
@@ -1328,9 +1492,11 @@
         // DOM Elements
         const exportBtn = document.getElementById('exportBtn');
         const themeToggle = document.getElementById('themeToggle');
+        const themeToggleMobile = document.getElementById('themeToggleMobile');
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.querySelector('.sidebar');
-        const searchInput = document.getElementById('searchInput');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const searchInput = document.getElementById('searchInputMobile');
         const gigsTableBody = document.getElementById('gigsTableBody');
         const feedItems = document.getElementById('feedItems');
         const gigsNoResults = document.getElementById('gigsNoResults');
@@ -1343,8 +1509,19 @@
         // Event Listeners
         exportBtn.addEventListener('click', exportData);
         themeToggle.addEventListener('click', toggleTheme);
+        themeToggleMobile.addEventListener('click', toggleTheme);
         menuToggle.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', closeSidebar);
         searchInput.addEventListener('input', performSearch);
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth <= 992 && sidebar.classList.contains('active') && 
+                !sidebar.contains(event.target) && 
+                event.target !== menuToggle) {
+                closeSidebar();
+            }
+        });
 
         // Functions
         function exportData(e) {
@@ -1366,15 +1543,20 @@
             document.body.classList.toggle('dark-mode');
             const icon = themeToggle.querySelector('i');
             const text = themeToggle.querySelector('span');
+            const mobileIcon = themeToggleMobile.querySelector('i');
             
             if (document.body.classList.contains('dark-mode')) {
                 icon.classList.remove('fa-moon');
                 icon.classList.add('fa-sun');
+                mobileIcon.classList.remove('fa-moon');
+                mobileIcon.classList.add('fa-sun');
                 text.textContent = 'Light Mode';
                 localStorage.setItem('theme', 'dark');
             } else {
                 icon.classList.remove('fa-sun');
                 icon.classList.add('fa-moon');
+                mobileIcon.classList.remove('fa-sun');
+                mobileIcon.classList.add('fa-moon');
                 text.textContent = 'Dark Mode';
                 localStorage.setItem('theme', 'light');
             }
@@ -1382,6 +1564,14 @@
 
         function toggleSidebar() {
             sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
         // Search functionality
@@ -1457,13 +1647,35 @@
                 document.body.classList.add('dark-mode');
                 const icon = themeToggle.querySelector('i');
                 const text = themeToggle.querySelector('span');
+                const mobileIcon = themeToggleMobile.querySelector('i');
                 icon.classList.remove('fa-moon');
                 icon.classList.add('fa-sun');
+                mobileIcon.classList.remove('fa-moon');
+                mobileIcon.classList.add('fa-sun');
                 text.textContent = 'Light Mode';
             }
             
+            // Close sidebar if clicked outside on mobile
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 992 && 
+                    sidebar.classList.contains('active') && 
+                    !sidebar.contains(event.target) && 
+                    event.target !== menuToggle) {
+                    closeSidebar();
+                }
+            });
+            
             // Animate stats cards
             const cards = document.querySelectorAll('.stat-card, .mini-card, .action-btn, .feed-item');
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 992) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
     </script>
 </body>
