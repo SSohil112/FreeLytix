@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - FreeLytix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        :root {
+            --primary: #1dbf73;
+            --primary-gradient: linear-gradient(135deg, #1dbf73 0%, #17a564 100%);
+            --primary-light: rgba(29, 191, 115, 0.15);
+            --secondary: #2b2d42;
+            --accent: #446ee7;
+            --accent-gradient: linear-gradient(135deg, #446ee7 0%, #3b5dc0 100%);
+            --success: #4cc9f0;
+            --warning: #f9c74f;
+            --danger: #f94144;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --gray-light: #ced4da;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --background: #f5f7fa;
+            --text: #2b2d42;
+            --card-bg: white;
+            --header-height: 70px;
+            --border-radius: 12px;
+            --sidebar-width: 260px;
+        }
+
+        .dark-mode {
+            --primary: #1dbf73;
+            --primary-gradient: linear-gradient(135deg, #1dbf73 0%, #17a564 100%);
+            --primary-light: rgba(29, 191, 115, 0.2);
+            --secondary: #f8f9fa;
+            --accent: #6c8dfa;
+            --accent-gradient: linear-gradient(135deg, #6c8dfa 0%, #5b7ce0 100%);
+            --light: #121212;
+            --dark: #f8f9fa;
+            --gray: #adb5bd;
+            --gray-light: #343a40;
+            --background: #0a0a0a;
+            --text: #f8f9fa;
+            --card-bg: #1a1a1a;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --card-shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--gray-light);
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-icon {
+            color: white;
+            font-size: 24px;
+            background: var(--primary-gradient);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-nav {
+            padding: 0 15px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 5px;
+            border-radius: var(--border-radius);
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            margin-right: 12px;
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 20px 30px;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .page-title h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .page-title p {
+            color: var(--gray);
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 15px 10px 40px;
+            border-radius: 30px;
+            border: 1px solid var(--gray-light);
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 14px;
+            width: 250px;
+            transition: var(--transition);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 30px;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .user-profile:hover {
+            background: var(--primary-light);
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .notification-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg);
+            color: var(--gray);
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .notification-btn:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent);
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg);
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text);
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .menu-toggle:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        /* About Content */
+        .about-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .about-text {
+            padding-right: 20px;
+        }
+
+        .about-text h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+            color: var(--gray);
+            line-height: 1.8;
+        }
+
+        .tech-stack {
+            margin-top: 30px;
+        }
+
+        .tech-stack h3 {
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .tech-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tech-item {
+            background: var(--card-bg);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text);
+            border: 1px solid var(--gray-light);
+        }
+
+        .tech-item i {
+            color: var(--primary);
+        }
+
+        .about-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .visual-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .visual-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .visual-card h3 {
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+
+        .visual-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(29, 191, 115, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            color: var(--gray);
+            font-size: 14px;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 0;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+                width: var(--sidebar-width);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 10px;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-text {
+                padding-right: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 15px;
+            }
+            
+            .search-box input {
+                width: 180px;
+            }
+            
+            .user-info {
+                display: none;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .header-actions {
+                gap: 10px;
+            }
+            
+            .search-box {
+                display: none;
+            }
+            
+            .about-text h2 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-chart-line logo-icon"></i>
+                    <h1>FreeLytix</h1>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('home') }}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="{{ url_for('eda') }}" class="nav-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="/profile" class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="{{ url_for('about') }}" class="nav-item active">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </a>
+                {% if user %}
+                <a href="{{ url_for('settings') }}" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                {% endif %}
+                <div class="nav-item" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                    <span>Dark Mode</span>
+                </div>
+                {% if user %}
+                <a href="{{ url_for('logout') }}" class="nav-item">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="nav-item">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </a>
+                <a href="{{ url_for('register') }}" class="nav-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Register</span>
+                </a>
+                {% endif %}
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <div class="top-header">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="page-title">
+                    <h2>About FreeLytix</h2>
+                    <p>Learn more about our platform and technology</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search...">
+                    </div>
+                    <div class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    {% if user %}
+                    <a href="/profile" class="user-profile">
+                        <div class="user-avatar">{{ user.username[0]|upper }}</div>
+                        <div class="user-info">
+                            <span class="user-name">{{ user.username }}</span>
+                            <span class="user-role">User</span>
+                        </div>
+                    </a>
+                    {% endif %}
+                    <div class="theme-toggle" id="themeToggleBtn">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>About This Application</h2>
+                        <p>This interactive dashboard provides comprehensive analysis of Fiverr marketplace data, including earnings, ratings, and categories. Our goal is to help freelancers and businesses make data-driven decisions to optimize their Fiverr presence.</p>
+                        
+                        <p>The application visualizes key metrics and trends from the Fiverr dataset, allowing users to explore different aspects of the marketplace and gain valuable insights.</p>
+                        
+                        <div class="tech-stack">
+                            <h3>Technology Stack</h3>
+                            <div class="tech-items">
+                                <div class="tech-item">
+                                    <i class="fab fa-python"></i>
+                                    <span>Flask</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>Matplotlib</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fas fa-chart-area"></i>
+                                    <span>Seaborn</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-html5"></i>
+                                    <span>HTML5</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-css3-alt"></i>
+                                    <span>CSS3</span>
+                                </div>
+                                <div class="tech-item">
+                                    <i class="fab fa-js"></i>
+                                    <span>JavaScript</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="{{ url_for('home') }}" class="back-button">
+                            <i class="fas fa-arrow-left"></i>
+                            Back to Dashboard
+                        </a>
+                    </div>
+                    
+                    <div class="about-visual">
+                        <div class="visual-card">
+                            <div class="visual-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h3>Data-Driven Insights</h3>
+                            <p>Our application processes Fiverr data to provide actionable insights and visualizations that help users understand market trends.</p>
+                            <div class="tech-item">
+                                <i class="fas fa-code-branch"></i>
+                                <span>Active Development</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <p>FreeLytix © 2025 | Powered by Flask, Matplotlib & Seaborn</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const themeToggle = document.getElementById('themeToggle');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.querySelector('.sidebar');
+        
+        // Event Listeners
+        if (themeToggle) {
+            themeToggle.addEventListener('click', toggleTheme);
+        }
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', toggleTheme);
+        }
+        menuToggle.addEventListener('click', toggleSidebar);
+        
+        // Functions
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle ? themeToggle.querySelector('i') : null;
+            const iconBtn = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
+            const text = themeToggle ? themeToggle.querySelector('span') : null;
+            
+            if (document.body.classList.contains('dark-mode')) {
+                if (icon) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+                if (iconBtn) {
+                    iconBtn.classList.remove('fa-moon');
+                    iconBtn.classList.add('fa-sun');
+                }
+                if (text) {
+                    text.textContent = 'Light Mode';
+                }
+                localStorage.setItem('theme', 'dark');
+            } else {
+                if (icon) {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                if (iconBtn) {
+                    iconBtn.classList.remove('fa-sun');
+                    iconBtn.classList.add('fa-moon');
+                }
+                if (text) {
+                    text.textContent = 'Dark Mode';
+                }
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+        }
+
+        // Initialize theme when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for saved theme preference
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                const icon = themeToggle ? themeToggle.querySelector('i') : null;
+                const iconBtn = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
+                const text = themeToggle ? themeToggle.querySelector('span') : null;
+                
+                if (icon) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+                if (iconBtn) {
+                    iconBtn.classList.remove('fa-moon');
+                    iconBtn.classList.add('fa-sun');
+                }
+                if (text) {
+                    text.textContent = 'Light Mode';
+                }
+            }
+            
+            // Simple animation for elements when they come into view
+            const elements = document.querySelectorAll('.about-text, .visual-card');
+            
+            elements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            setTimeout(() => {
+                elements.forEach((element, index) => {
+                    setTimeout(() => {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }, 100 * index);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

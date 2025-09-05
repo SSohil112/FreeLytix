@@ -1,0 +1,11 @@
+Flask  
+Flask-SQLAlchemy  
+itsdangerous  
+Werkzeug Security  
+Pandas  
+Matplotlib  
+Seaborn  
+OS  
+Datetime  
+NumPy  
+
