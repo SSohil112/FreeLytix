@@ -8,6 +8,8 @@ seaborn
 numpy
 gunicorn
 python-dotenv
+Flask-Mail
+
 
 
 
