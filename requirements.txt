@@ -6,4 +6,6 @@ pandas
 matplotlib
 seaborn
 numpy
+gunicorn
+
 
