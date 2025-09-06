@@ -385,7 +385,7 @@ def generate_plots(df):
 
 
 from flask_mail import Mail, Message
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
+app.config['SECRET_KEY'] = 'c4a76a349a69c2812c24c5643448bde8d0e4f943264d7a800e70e813a2920668'
 # App config (app.py me upar set karna h)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
